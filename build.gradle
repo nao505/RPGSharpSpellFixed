@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.binggre'
+version = '1.0.0'
+jar {
+    destinationDir(file("C:\\Users\\pseon\\Desktop\\1.18.2\\plugins"))
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'C:\\Users\\pseon\\Desktop\\Libs\\Plugins\\MagicSpells 1.18.2.jar')
+    implementation fileTree(include: ['*.jar'], dir: 'C:\\Users\\pseon\\Desktop\\Libs\\RpgSharp')
+    compileOnly 'org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT'
+}
+
+def targetJavaVersion = 8
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

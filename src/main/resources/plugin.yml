@@ -1,0 +1,8 @@
+name: RPGSharpSpellFixed
+version: '${version}'
+main: com.binggre.rpgsharpspellfixed.RPGSharpSpellFixed
+api-version: 1.18
+loadbefore:
+  - RpgSharp
+depend: [MagicSpells]
+authors: [binggre]
